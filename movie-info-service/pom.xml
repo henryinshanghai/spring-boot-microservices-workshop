@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.4.1</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+	<groupId>io.javabrains</groupId>
+	<artifactId>movie-info-service</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>movie-info-service</name>
+	<description>this is an inside api to provide movie detail information</description>
+
+	<properties>
+		<java.version>1.8</java.version>
+		<!-- 为什么要添加这个版本信息？-->
+		<!--
+			分解为两个问题：
+				1 为什么其他的依赖都没有指定版本信息？
+					因为截止到目前为止，所有项目的依赖都是 springBoot框架所引入的依赖（所有依赖的版本都已经确定）
+					而我们新引入了一个springCloud依赖，这时候就需要指定预期的版本信息
+				2 为什么要在 properties标签中来添加这个版本信息？
+					1 理想情况下，需要为每一个引入的依赖来指定版本信息；
+					2 通过 properties这种全局的方式，可以在所有依赖上全局使用这个配置信息
+
+            SpringCloud 与 Netflix微服务的关系：SpringCloud通过 wrapper的方式把所有Netflix的 微服务library都包含进来了
+		-->
+		<!--<spring-cloud.version>Greenwich.RELEASE</spring-cloud.version>-->
+		<spring-cloud.version>2020.0.0</spring-cloud.version> <!-- springboot 与 springcloud 一起工作时，有对应的版本要求  -->
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+
+        <!-- eureka-client adding part 01 👇-->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId> <!-- 😳 Note：这里的groupId是 cloud -->
+			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+    <!-- eureka-client adding part 02 👇 -->
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+
+    <!-- eureka-client adding part 03 👇 -->
+    <repositories>
+        <repository>
+            <id>spring-milestones</id>
+            <name>Spring Milestones</name>
+            <url>https://repo.spring.io/milestone</url>
+        </repository>
+    </repositories>
+
+</project>
